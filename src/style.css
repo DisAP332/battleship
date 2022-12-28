@@ -1,0 +1,82 @@
+@font-face {
+    font-family: military;
+    src: url(./fonts/BlackOpsOne-Regular.ttf);
+}
+
+@font-face {
+    font-family: NavyBuster;
+    src: url(./fonts/stencil-cargo-army.regular.ttf);
+}
+
+* {
+    margin:0;
+    border:0;
+}
+
+#content {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('./images/ocean.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    font-size: 8vw;
+    font-family: military;
+    text-shadow: 0px 0px 10px black;
+    letter-spacing: 10px;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+}
+
+#gameWrapper {
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 2vh;
+    overflow: auto;
+}
+
+#gameWrapper {
+    font-family: Military;
+}
+
+#gameWrapper > input {
+    margin-top: 3vh;
+    border: 2px solid rgba(31, 0, 209, 0.219);
+    box-shadow: 0px 0px 10px black;
+    width: 30vw;
+    height: 5vh;
+    background-color: rgba(255, 222, 173, 0.253);
+    font-size: 4vh;
+    text-align: center;
+    font-family: NavyBuster;
+}
+
+#grid {
+    border: 20px solid transparent;
+    border-image: url(./images/tape.jpg) 30 round;
+    margin-top: 5vh;
+    display:grid;
+    width: 400px;
+    height: 400px;
+    box-shadow: 0px 0px 10px black;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#gridCord {
+    border:1px solid rgba(0, 0, 0, 0.253);background-color:lightblue;
+}
+
+#gridCord:hover {
+    background-color: yellow;
+}
