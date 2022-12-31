@@ -1,3 +1,6 @@
+import { clearGameWrapper } from './clear';
+import { setUp } from './set';
+
 function begin() {
   const content = document.getElementById('content');
   const headerWrapper = document.createElement('div');
@@ -20,6 +23,17 @@ function begin() {
   content.appendChild(gameWrapper);
   gameWrapper.appendChild(nameH1);
   gameWrapper.appendChild(nameInput);
+
+  let playerName;
+
+  nameInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' && nameInput.value !== '') {
+      playerName = nameInput.value;
+      clearGameWrapper(gameWrapper);
+      setUp(playerName);
+    }
+  });
+
 }
 
 export { begin };
