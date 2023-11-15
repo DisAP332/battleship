@@ -33,7 +33,6 @@ function begin() {
       setUp(playerName);
     }
   });
-
 }
 
 export { begin };
