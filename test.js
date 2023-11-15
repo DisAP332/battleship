@@ -1,20 +1,12 @@
-const BoardPrototypes = {
-  Shoot(i) {
-    return (this.Board[i].shot = true);
-  },
-};
-
-function createBoard(name) {
-  const Board = new Array(100).fill({
-    isShip: false,
-    shot: false,
-  });
-  return Object.create(BoardPrototypes, {
-    Player: { value: name },
-    Board: { value: Board },
-  });
+function changeName(newName) {
+  this.name = newName;
 }
 
-const board = createBoard("player1");
+function createUser(name, age) {
+  function changeName(newName) {
+    changeName(newName);
+  }
+  return { name, age, changeName };
+}
 
-console.log(board.shoot(2)); // player1
+console.log(Math.floor(69 / 10) * 10 + 10);
