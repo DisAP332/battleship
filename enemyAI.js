@@ -56,6 +56,7 @@ export default function enemyAI(board, enemyBoard) {
   }
 
   // ---------------------------- shoot ---------------------------------------
+  // place target data outside function to be passed for testing
   const targetingData = {
     shipsDestroyed: [],
     shipFirstStrikeOrgin: null,
@@ -91,6 +92,8 @@ export default function enemyAI(board, enemyBoard) {
           targetingData.phase = 2;
         }
       }
+      console.log("turn over");
+      return;
     }
     // phase 2 of enemy AI shooting function_______________________________
     if (targetingData.phase === 2) {
@@ -155,25 +158,26 @@ export default function enemyAI(board, enemyBoard) {
         // calculations finished, now make shot
       }
       // load target and take away from targets array
-      console.log(targetingData.targets);
       let shotToMake = targetingData.targets.splice(0, 1)[0];
-      console.log(shotToMake);
       // make shot
       enemyBoard.shoot(shotToMake.cord);
       // check if hit
       if (enemyGrid[shotToMake.cord].hit === true) {
+        console.log("hit successful. move onto phase 3");
         // shot hit so move to phase 3, reset targets, and set found ships positioning
         targetingData.shipSecondStrikeData = shotToMake;
         targetingData.phase = 3;
         targetingData.successfulShots++;
-        targetingData.targets = [];
       }
+      console.log(targetingData.shipSecondStrikeData);
+      console.log("turn over");
+      return;
     }
-
+    let target;
     // phase 3 of enemy AI shooting function_______________________________
     function calculateUp(range) {
       for (let i = 1; i <= range; i++) {
-        let target = targetingData.shipSecondStrikeData.cord + Number(`${i}0`);
+        target = targetingData.shipSecondStrikeData.cord + Number(`${i}0`);
         if (target < 100 && enemyGrid[target].shotAt === false) {
           targetingData.phase3Targets.higher.push(target);
         } else {
@@ -182,16 +186,10 @@ export default function enemyAI(board, enemyBoard) {
         }
       }
     }
-    function calculateDown(range, strikeUpSuccess) {
+    function calculateDown(range) {
+      console.log("calculating down");
       for (let i = 1; i <= range; i++) {
-        let target;
-        // if strike up was successful, then targets are calculated from the first strike orgin
-        if (strikeUpSuccess === true) {
-          target = targetingData.shipFirstStrikeOrgin.cord - Number(`${i}0`);
-        } else {
-          // strike was unsuccessful so we know we are starting from the second strike orgin
-          target = targetingData.shipSecondStrikeData.cord - Number(`${i}0`);
-        }
+        target = targetingData.shipFirstStrikeOrgin.cord - Number(`${i}0`);
         if (target > 0 && enemyGrid[target].shotAt === false) {
           targetingData.phase3Targets.lower.push(target);
         } else {
@@ -202,7 +200,7 @@ export default function enemyAI(board, enemyBoard) {
     }
     function calcualateRight(range) {
       for (let i = 1; i <= range; i++) {
-        let target = targetingData.shipSecondStrikeData.cord + i;
+        target = targetingData.shipSecondStrikeData.cord + i;
         // the Math floor is to prevent the ship from shooting over the edge of the board
         if (
           target <
@@ -216,15 +214,10 @@ export default function enemyAI(board, enemyBoard) {
         }
       }
     }
-    function calculateLeft(range, strikeRightSuccess) {
-      let target;
+    function calculateLeft(range) {
       for (let i = 1; i <= range; i++) {
-        if (strikeRightSuccess === true) {
-          // if strike right was successful we want to start from the first strike orgin
-          target = targetingData.shipFirstStrikeOrgin.cord - i;
-        } else {
-          target = targetingData.shipSecondStrikeData.cord - i;
-        }
+        target = targetingData.shipFirstStrikeOrgin.cord - i;
+        // the Math floor is to prevent the ship from shooting over the edge of the board
         if (
           target > Math.floor(targetingData.shipFirstStrikeOrgin / 10) * 10 &&
           enemyGrid[target].shotAt === false
@@ -237,55 +230,79 @@ export default function enemyAI(board, enemyBoard) {
       }
     }
     function determinShipDestroyed() {
-      if ((targetingData.successfulShots = 5)) {
+      if (targetingData.successfulShots === 5) {
+        console.log("carrier destroyed");
         targetingData.shipsDestroyed.push("carrier");
         targetingData.maxShipSize = 4;
       }
-      if ((targetingData.successfulShots = 4)) {
+      if (targetingData.successfulShots === 4) {
+        console.log("battleship destroyed");
         targetingData.shipsDestroyed.push("battleship");
-        if (targetingData.shipsDestroyed.includes("carrier")) {
-          targetingData.maxShipSize = 3;
-        }
       }
-      if ((targetingData.successfulShots = 3)) {
-        if (targetingData.shipsDestroyed.includes("destroyer")) {
+      if (targetingData.successfulShots === 3) {
+        // if destroyer is not included we destroyed the destroyer
+        if (targetingData.shipsDestroyed.includes("destroyer") === false) {
           targetingData.shipsDestroyed.push("destroyer");
+          console.log("destroyer destroyed");
         } else {
+          // destroyer has been destroyed therefore we destroyed the cruiser
           targetingData.shipsDestroyed.push("cruiser");
-          if (
-            targetingData.shipsDestroyed.includes("battleship") &&
-            targetingData.shipsDestroyed.includes("carrier") &&
-            targetingData.shipsDestroyed.includes("destroyer")
-          ) {
-            targetingData.maxShipSize = 2;
-          }
+          console.log("cruiser destroyed");
         }
       }
-      if ((targetingData.successfulShots = 2)) {
+      if (targetingData.successfulShots === 2) {
         targetingData.shipsDestroyed.push("submarine");
+        console.log("submarine destroyed");
+      }
+      // determine max ship size
+      if (
+        targetingData.shipsDestroyed.includes("carrier") === true &&
+        targetingData.shipsDestroyed.includes("battleship") === true &&
+        targetingData.shipsDestroyed.includes("destroyer") === true &&
+        targetingData.shipsDestroyed.includes("cruiser") === true &&
+        targetingData.shipsDestroyed.includes("submarine") === true
+      ) {
+        // this will give win condition for AI
+        targetingData.maxShipSize = 1;
+      } else if (
+        targetingData.shipsDestroyed.includes("carrier") === true &&
+        targetingData.shipsDestroyed.includes("battleship") === true &&
+        targetingData.shipsDestroyed.includes("destroyer") === true &&
+        targetingData.shipsDestroyed.includes("cruiser") === true
+      ) {
+        targetingData.maxShipSize = 2;
+      } else if (
+        targetingData.shipsDestroyed.includes("carrier") === true &&
+        targetingData.shipsDestroyed.includes("battleship") === true
+      ) {
+        targetingData.maxShipSize = 3;
+      } else if (targetingData.shipsDestroyed.includes("carrier") === true) {
+        targetingData.maxShipSize = 4;
       }
     }
     if (targetingData.phase === 3) {
+      console.log("phase 3");
+      targetingData.targets = [];
       // calculate targets if there are no targets
       if (targetingData.targets.length === 0) {
         if (targetingData.shipSecondStrikeData.positioning === "vertical") {
           if (targetingData.shipSecondStrikeData.direction === "up") {
             calculateUp(targetingData.maxShipSize - 2);
-            calculateDown(targetingData.maxShipSize - 2, true);
+            calculateDown(targetingData.maxShipSize - 2);
           }
           if (targetingData.shipSecondStrikeData.direction === "down") {
             // we wont calculate up because we already know the strike was unsuccessful
-            calculateDown(targetingData.maxShipSize - 2, false);
+            calculateDown(targetingData.maxShipSize - 2);
           }
         }
         if (targetingData.shipSecondStrikeData.positioning === "horizontal") {
           if (targetingData.shipSecondStrikeData.direction === "right") {
             calcualateRight(targetingData.maxShipSize - 2);
-            calculateLeft(targetingData.maxShipSize - 2, true);
+            calculateLeft(targetingData.maxShipSize - 2);
           }
           if (targetingData.shipSecondStrikeData.direction === "left") {
             // we wont calculate right because we already know the strike was unsuccessful
-            calculateLeft(targetingData.maxShipSize - 2, false);
+            calculateLeft(targetingData.maxShipSize - 2);
           }
         }
       }
@@ -313,7 +330,10 @@ export default function enemyAI(board, enemyBoard) {
           // shot was unsuccessful so reset targets as we know the ship is not in this direction
           targetingData.phase3Targets.lower = [];
         }
-      } else {
+      } else if (
+        targetingData.phase3Targets.higher.length === 0 &&
+        targetingData.phase3Targets.lower.length === 0
+      ) {
         // we can assume the ship is sunk so reset phase and targeting data
         // determin ship destroyed and add to destroyed array
         console.log("ship destroyed");
@@ -322,8 +342,11 @@ export default function enemyAI(board, enemyBoard) {
         targetingData.successfulShots = 0;
         targetingData.shipFirstStrikeOrgin = null;
         targetingData.shipSecondStrikeData = null;
+        makeShot();
       }
+      console.log("turn over");
+      return;
     }
   }
-  return { placeShips, makeShot };
+  return { placeShips, makeShot, targetingData };
 }

@@ -1,12 +1,17 @@
-function changeName(newName) {
-  this.name = newName;
+console.log("heyo");
+
+function delay() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("waited");
+      resolve(); // Resolve the promise after the timeout
+    }, 300);
+  });
 }
 
-function createUser(name, age) {
-  function changeName(newName) {
-    changeName(newName);
-  }
-  return { name, age, changeName };
-}
+await delay();
+console.log("after");
 
-console.log(Math.floor(69 / 10) * 10 + 10);
+setTimeout(() => {
+  console.log("targets reset");
+}, 100);

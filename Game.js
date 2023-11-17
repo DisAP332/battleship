@@ -9,28 +9,20 @@ function Game() {
   function startGame() {
     enemy.placeShips();
     player.placeShips();
+    console.log(enemyBoard.ships[0].positionsOccupied[0][0]);
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
-    enemy.placeShips();
-    player.placeShips();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
     enemy.makeShot();
-    player.makeShot();
+    enemy.makeShot();
+    enemy.makeShot();
+    enemy.makeShot();
   }
   return { startGame };
 }
