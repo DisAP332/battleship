@@ -53,10 +53,10 @@ export default function createBoard() {
     }
     this.board[i] = { ...this.board[i], shotAt: true };
   }
-  function placeShip(positions) {
+  function placeShips(positions) {
     positions.forEach((position) => {
       this.board[position] = { ...this.board[position], isShip: true };
     });
   }
-  return { board, ships, shoot, placeShip, isPositionsTaken };
+  return { board, ships, shoot, placeShips, isPositionsTaken };
 }
