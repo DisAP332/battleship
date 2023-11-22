@@ -1,7 +1,7 @@
+import shipPlacementScreen from "./shipPlacementScreen";
 import { clearGameWrapper } from "./clear";
-import { setUp } from "./set";
 
-function begin() {
+export default function openStartScreen(player) {
   const content = document.getElementById("content");
   const headerWrapper = document.createElement("div");
   const headerH1 = document.createElement("h1");
@@ -26,15 +26,11 @@ function begin() {
   gameWrapper.appendChild(nameH1);
   gameWrapper.appendChild(nameInput);
 
-  let playerName;
-
-  nameInput.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && nameInput.value !== "") {
-      playerName = nameInput.value;
-      clearGameWrapper(gameWrapper);
-      setUp(playerName);
-    }
-  });
+  // nameInput.addEventListener("keypress", (event) => {
+  //   if (event.key === "Enter" && nameInput.value !== "") {
+  //     let playerName = nameInput.value;
+  //     clearGameWrapper(gameWrapper);
+  //     shipPlacementScreen(playerName);
+  //   }
+  // });
 }
-
-export { begin };

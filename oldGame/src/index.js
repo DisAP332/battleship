@@ -1,7 +1,5 @@
-import _ from 'lodash';
-import './style.css';
-import { begin } from './components/begin';
-// import { clearGameWrapper } from './clear';
-// import { setUp } from './set';
+import _ from "lodash";
+import "./style.css";
+import Game from "./components/game.js";
 
-window.onload = begin();
+window.onload = Game().startGame();
