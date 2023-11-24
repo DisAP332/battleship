@@ -3,6 +3,7 @@ import { player } from "./game.js";
 
 let axis = "x";
 let maxShipSize = 5;
+let repeat3 = false;
 let high;
 
 export function changeAxis() {
@@ -136,6 +137,11 @@ export function gridPlacementMouseHandler(startingPosition, event) {
           styleGridCordinates(value, "yellow");
         }
         player.placeShip(startingPosition, axis, maxShipSize);
+        if (maxShipSize === 3 && repeat3 === false) {
+          repeat3 = true;
+        } else {
+          maxShipSize--;
+        }
         console.log(player.board.ships);
       }
     }
@@ -151,6 +157,11 @@ export function gridPlacementMouseHandler(startingPosition, event) {
           }
         }
         player.placeShip(startingPosition, axis, maxShipSize);
+        if (maxShipSize === 3 && repeat3 === false) {
+          repeat3 = true;
+        } else {
+          maxShipSize--;
+        }
       }
     }
   }

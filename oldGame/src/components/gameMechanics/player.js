@@ -35,13 +35,12 @@ export default function Player(board, enemyBoard) {
       // set the battleship positions
       board.ships[1].positionsOccupied = positions;
     }
-    if (size === 3) {
-      // set the cruiser positions
-      board.ships[2].positionsOccupied = positions;
-    }
     if (size === 3 && board.ships[2].positionsOccupied.length !== 0) {
-      // set the destroyer positions
+      // set the cruiser positions
       board.ships[3].positionsOccupied = positions;
+    } else if (size === 3) {
+      // set the destroyer positions
+      board.ships[2].positionsOccupied = positions;
     }
     if (size === 2) {
       // set the submarine positions
