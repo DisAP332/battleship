@@ -33,7 +33,7 @@ export default function createGrid(mode) {
       });
       gridCordinate.addEventListener("click", () => {
         event = "click";
-        // mouseHandler(gridCordinate.value, event, mode, enemyPositions);
+        gridPlacementMouseHandler(gridCordinate.value, event);
       });
     }
   }

@@ -5,11 +5,14 @@ import openStartScreen from "./UI/startScreen.js";
 import shipPlacementScreen from "./UI/shipPlacementScreen.js";
 import { clearGameWrapper } from "./UI/clear";
 
-export default function Game() {
+export let player;
+export let enemy;
+
+export function Game() {
   const playerBoard = createBoard();
   const enemyBoard = createBoard();
-  const enemy = enemyAI(enemyBoard, playerBoard);
-  const player = Player(playerBoard, enemyBoard);
+  enemy = enemyAI(enemyBoard, playerBoard);
+  player = Player(playerBoard, enemyBoard);
   function startGame() {
     // the enemy places their ships
     enemy.placeShips();

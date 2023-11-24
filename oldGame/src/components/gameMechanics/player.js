@@ -49,5 +49,5 @@ export default function Player(board, enemyBoard) {
     }
   }
 
-  return { name, grid, placementAxis, resetBoard, placeShip };
+  return { name, grid, board, placementAxis, resetBoard, placeShip };
 }
