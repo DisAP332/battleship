@@ -36,7 +36,7 @@ export default function Game() {
     }).then(() => {
       // open the ship placement screen
       new Promise((resolve) => {
-        shipPlacementScreen(player.name);
+        shipPlacementScreen(player);
       });
     });
   }

@@ -19,13 +19,13 @@ export default function createBoard() {
       positionsOccupied: [],
     },
     {
-      name: "Submarine",
+      name: "Destroyer",
       size: 3,
       safeRange: { y: 80, x: 3 },
       positionsOccupied: [],
     },
     {
-      name: "Destroyer",
+      name: "submarine",
       size: 2,
       safeRange: { y: 90, x: 2 },
       positionsOccupied: [],

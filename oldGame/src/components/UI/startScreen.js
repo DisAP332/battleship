@@ -1,5 +1,4 @@
 import shipPlacementScreen from "./shipPlacementScreen";
-import { clearGameWrapper } from "./clear";
 
 export default function openStartScreen(player) {
   const content = document.getElementById("content");

@@ -1,5 +1,5 @@
 import createGrid from "./createGrid.js";
-import mouseHandler from "../mouseHandler.js";
+import { changeAxis } from "../mouseHandler.js";
 import Player from "../gameMechanics/player.js";
 
 export default function shipPlacementScreen(player) {
@@ -34,16 +34,13 @@ export default function shipPlacementScreen(player) {
   gridWrapper.appendChild(resetButton);
   gridWrapper.appendChild(confirmPosition);
 
-  const player = Player(playerBoard, enemyBoard);
-  player.name = playerName;
-
   resetButton.addEventListener("click", () => {
     player.resetBoard();
   });
 
-  // axisButton.addEventListener("click", () => {
-  //   mouseHandler(null, "axis", "secondStage");
-  // });
+  axisButton.addEventListener("click", () => {
+    changeAxis();
+  });
 
   // confirmPosition.addEventListener("click", () => {
   //   if (ShipPositions.length === 17) {

@@ -1,4 +1,4 @@
-// import { mouseHandler } from "../../../../old/mouseHandler";
+import { gridPlacementMouseHandler } from "../mouseHandler.js";
 
 export default function createGrid(mode) {
   const gridWrapper = document.getElementById("gridWrapper");
@@ -17,15 +17,19 @@ export default function createGrid(mode) {
       let gridCordinate = document.createElement("div");
 
       // set value and id
-      gridCordinate.value = [i];
-      gridCordinate.setAttribute("id", `gridCord${[i]}`);
+      gridCordinate.value = i;
+      gridCordinate.setAttribute("id", i);
 
       grid.appendChild(gridCordinate);
 
       // add event listeners
       gridCordinate.addEventListener("mouseover", () => {
         event = "mouseover";
-        // mouseHandler(gridCordinate.value, event, mode, enemyPositions);
+        gridPlacementMouseHandler(gridCordinate.value, event);
+      });
+      gridCordinate.addEventListener("mouseleave", () => {
+        event = "mouseleave";
+        gridPlacementMouseHandler(gridCordinate.value, event);
       });
       gridCordinate.addEventListener("click", () => {
         event = "click";

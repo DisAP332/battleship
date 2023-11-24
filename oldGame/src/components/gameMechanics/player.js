@@ -2,6 +2,7 @@ export default function Player(board, enemyBoard) {
   let grid = board.board;
   let enemyGrid = enemyBoard.board;
   const name = null;
+  const placementAxis = "x";
 
   function resetBoard() {
     for (let i = 0; i < grid.length; i++) {
@@ -48,5 +49,5 @@ export default function Player(board, enemyBoard) {
     }
   }
 
-  return { name, grid, resetBoard, placeShip };
+  return { name, grid, placementAxis, resetBoard, placeShip };
 }
