@@ -1,3 +1,5 @@
+import { winScreen } from "../UI/winScreen";
+
 export default function enemyAI(board, enemyBoard) {
   let grid = board.board;
   let enemyGrid = enemyBoard.board;
@@ -71,56 +73,70 @@ export default function enemyAI(board, enemyBoard) {
     successfulShots: 0,
   };
 
+  function displayShot(cord, color) {
+    const cordinate = document.getElementById(`e${cord}`);
+    cordinate.setAttribute("style", `background-color: ${color};`);
+  }
+
+  const checkered = [
+    0, 2, 4, 6, 8, 11, 13, 15, 17, 19, 22, 24, 26, 28, 31, 33, 35, 37, 39, 42,
+    44, 46, 48, 51, 53, 55, 57, 59, 62, 64, 66, 68, 71, 73, 75, 77, 79, 82, 84,
+    86, 88, 91, 93, 95, 97, 99,
+  ];
+
   function makeShot() {
-    if (targetingData.phase === 1) {
-      let randomShot = Math.floor(Math.random() * 100);
-      phase1(randomShot);
-    }
-    if (targetingData.phase === 2) {
-      phase2();
-    }
-    if (targetingData.phase === 3) {
-      phase3();
+    switch (targetingData.phase) {
+      case 3:
+        phase3();
+        break;
+      case 2:
+        phase2();
+        break;
+      case 1:
+        let randomShot = Math.floor(Math.random() * 46);
+        let shot = checkered[randomShot];
+        phase1(shot);
+        break;
     }
   }
 
   function phase1(target) {
+    console.log(target);
     // phase 1 of enemy AI shooting function _____________________________
-    console.log("phase 1");
     // check if shot has been made
     if (enemyGrid[target].shotAt === false) {
-      console.log(`shot at ${target}`);
       enemyBoard.shoot(target);
-      console.log(
-        `shot at ${target} results: shot: ${enemyGrid[target].shotAt} hit: ${enemyGrid[target].hit}`
-      );
       // check if shot hit
       if (enemyGrid[target].hit === true) {
         // shot hit so move to phase 2 and set First Strike Orgin
-        console.log("hit so move on to phase 2");
         targetingData.shipFirstStrikeOrgin = target;
         targetingData.successfulShots++;
         targetingData.phase = 2;
       }
     } else {
       // shot already made so try again with new random shot.
-      console.log("shot already made, try again");
-      makeShot(Math.floor(Math.random() * 100));
+      let randomShot = Math.floor(Math.random() * 46);
+      let shot = checkered[randomShot];
+      return makeShot(shot);
     }
-    console.log("turn over");
+    // show on UI if hit or miss
+    if (targetingData.phase === 2) {
+      // if phase 2 we can assume hit
+      displayShot(target, "red");
+    } else {
+      displayShot(target, "green");
+    }
     return;
   }
 
   function phase2() {
     let target = targetingData.shipFirstStrikeOrgin;
-    console.log(targetingData);
-    console.log("phase 2");
+
     function targetFactory(cord, positioning, direction) {
       return { cord, positioning, direction };
     }
     // caculate targets.
     if (targetingData.targets.length === 0) {
-      console.log("calculating targets");
       // caculate possible targets
       let targetUp = targetFactory(target + 10, "vertical", "up");
       let targetDown = targetFactory(target - 10, "vertical", "down");
@@ -155,17 +171,19 @@ export default function enemyAI(board, enemyBoard) {
     }
     // load target and take away from targets array
     let shotToMake = targetingData.targets.shift();
-    console.log(shotToMake.cord);
     // make shot
     enemyBoard.shoot(shotToMake.cord);
     // check if hit
     if (enemyGrid[shotToMake.cord].hit === true) {
-      console.log("hit successful. move onto phase 3");
+      // display UI that shot hit
+      displayShot(shotToMake.cord, "red");
       // shot hit so move to phase 3, reset targets, and set found ships positioning
-      console.log(shotToMake);
       targetingData.shipSecondStrikeData = shotToMake;
       targetingData.phase = 3;
       targetingData.successfulShots++;
+    } else {
+      // miss so display that it was a miss
+      displayShot(shotToMake.cord, "green");
     }
     console.log(targetingData.shipSecondStrikeData);
     console.log("turn over");
@@ -335,11 +353,11 @@ export default function enemyAI(board, enemyBoard) {
       // check if hit
       if (enemyGrid[shotToMake].hit === true) {
         console.log("hit");
-
+        displayShot(shotToMake, "red");
         targetingData.successfulShots++;
       } else {
         console.log("miss");
-
+        displayShot(shotToMake, "green");
         // shot was unsuccessful so reset targets as we know the ship is not in this direction
         targetingData.phase3Targets.higher = [];
       }
@@ -349,11 +367,12 @@ export default function enemyAI(board, enemyBoard) {
       enemyBoard.shoot(shotToMake);
       // check if hit
       if (enemyGrid[shotToMake].hit === true) {
-        console.log("hit");
+        displayShot(shotToMake, "red");
         targetingData.successfulShots++;
       } else {
         // shot was unsuccessful so reset targets as we know the ship is not in this direction
         console.log("miss");
+        displayShot(shotToMake, "green");
         targetingData.phase3Targets.lower = [];
       }
     }
@@ -365,7 +384,11 @@ export default function enemyAI(board, enemyBoard) {
       // we can assume the ship is sunk so reset phase and targeting data
       // determin ship destroyed and add to destroyed array
       console.log("ship destroyed");
+      console.log(targetingData.maxShipSize);
       determinShipDestroyed();
+      if (targetingData.maxShipSize === 1) {
+        winScreen("The computer");
+      }
       targetingData.phase = 1;
       targetingData.successfulShots = 0;
       targetingData.shipFirstStrikeOrgin = null;
@@ -386,5 +409,5 @@ export default function enemyAI(board, enemyBoard) {
     calculateLeft,
     targetingData,
   };
-  return { placeShips, makeShot, testing };
+  return { placeShips, makeShot, grid, board, testing };
 }

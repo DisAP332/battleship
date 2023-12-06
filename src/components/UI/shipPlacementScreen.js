@@ -1,5 +1,5 @@
 import createGrid from "./createGrid.js";
-import { changeAxis } from "../mouseHandler.js";
+import { changeAxis, resetBoard } from "../mouseHandler.js";
 import Player from "../gameMechanics/player.js";
 
 export default function shipPlacementScreen(player) {
@@ -17,6 +17,7 @@ export default function shipPlacementScreen(player) {
   greetingbox.setAttribute("id", "greeting");
   axisButton.setAttribute("id", "axisBTN");
   resetButton.setAttribute("id", "resetBtn");
+  confirmPosition.setAttribute("id", "confirmBtn");
 
   greeting.setAttribute("style", "font-size:3rem");
   greeting.textContent = `${player.name} set your cordinates!`;
@@ -35,19 +36,10 @@ export default function shipPlacementScreen(player) {
   gridWrapper.appendChild(confirmPosition);
 
   resetButton.addEventListener("click", () => {
-    player.resetBoard();
+    resetBoard();
   });
 
   axisButton.addEventListener("click", () => {
     changeAxis();
   });
-
-  // confirmPosition.addEventListener("click", () => {
-  //   if (ShipPositions.length === 17) {
-  //     // gameWrapper.remove();
-  //     // enemyAI("choosePositions");
-  //     // console.log(enemyPositions);
-  //     // game("gameSetup");
-  //   }
-  // });
 }

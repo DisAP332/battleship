@@ -8,7 +8,8 @@ export default function Player(board, enemyBoard) {
     for (let i = 0; i < grid.length; i++) {
       grid[i] = { ...grid[i], isShip: false, shotAt: false, hit: false };
     }
-    grid.resetShips();
+    board.resetShips();
+    board.clearGridCosmetically();
   }
 
   function placeShip(position, orientation, size) {

@@ -1,4 +1,7 @@
-import { gridPlacementMouseHandler } from "../mouseHandler.js";
+import {
+  gameMouseHandler,
+  gridPlacementMouseHandler,
+} from "../mouseHandler.js";
 
 export default function createGrid(mode) {
   const gridWrapper = document.getElementById("gridWrapper");
@@ -13,7 +16,7 @@ export default function createGrid(mode) {
 
   if (mode === "setupStage") {
     for (let i = 0; i <= 99; i++) {
-      // create griid
+      // create grid
       let gridCordinate = document.createElement("div");
 
       // set value and id
@@ -37,6 +40,39 @@ export default function createGrid(mode) {
       });
     }
   }
+
+  if (mode === "gameStage") {
+    gridWrapper.appendChild(enemyGrid);
+    for (let i = 0; i <= 99; i++) {
+      // create grid
+      let gridCordinate = document.createElement("div");
+      let enemyCordinate = document.createElement("div");
+
+      // set ids this will be for the player;
+      gridCordinate.value = i;
+      gridCordinate.setAttribute("id", `p${i}`);
+      // set ids for the enemy grid;
+      enemyCordinate.setAttribute("id", `e${i}`);
+
+      grid.appendChild(gridCordinate);
+      enemyGrid.appendChild(enemyCordinate);
+
+      // add event listeners
+      gridCordinate.addEventListener("mouseover", () => {
+        event = "mouseover";
+        gameMouseHandler(gridCordinate.value, event);
+      });
+      gridCordinate.addEventListener("mouseleave", () => {
+        event = "mouseleave";
+        gameMouseHandler(gridCordinate.value, event);
+      });
+      gridCordinate.addEventListener("click", () => {
+        event = "click";
+        gameMouseHandler(gridCordinate.value, event);
+      });
+    }
+  }
+
   // if (mode === "thirdStage") {
   //   for (let i = 1; i <= 100; i++) {
   //     let gridCordinate = document.createElement("div");

@@ -1,4 +1,7 @@
+import { winScreen } from "../UI/winScreen";
+
 export default function createBoard() {
+  let hits = 0;
   const ships = [
     {
       name: "Carrier",
@@ -48,8 +51,10 @@ export default function createBoard() {
     return result;
   }
   function shoot(i) {
+    console.log(`shot at ${i}`);
     if (this.board[i].isShip === true) {
       this.board[i] = { ...this.board[i], hit: true };
+      this.hits += 1;
     }
     this.board[i] = { ...this.board[i], shotAt: true };
   }
@@ -63,5 +68,20 @@ export default function createBoard() {
       ship.positionsOccupied = [];
     });
   }
-  return { board, ships, shoot, placeShips, isPositionsTaken, resetShips };
+  function clearGridCosmetically() {
+    for (let i = 0; i < 100; i++) {
+      const cord = document.getElementById(i);
+      cord.setAttribute("style", "background-color: lightblue;");
+    }
+  }
+  return {
+    board,
+    ships,
+    hits,
+    shoot,
+    placeShips,
+    isPositionsTaken,
+    resetShips,
+    clearGridCosmetically,
+  };
 }

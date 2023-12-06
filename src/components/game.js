@@ -4,6 +4,8 @@ import createBoard from "./gameMechanics/board.js";
 import openStartScreen from "./UI/startScreen.js";
 import shipPlacementScreen from "./UI/shipPlacementScreen.js";
 import { clearGameWrapper } from "./UI/clear";
+import { finishPlacingShips } from "./mouseHandler.js";
+import { gameScreen } from "./UI/gameScreen.js";
 
 export let player;
 export let enemy;
@@ -36,12 +38,33 @@ export function Game() {
           resolve();
         }
       });
-    }).then(() => {
-      // open the ship placement screen
-      new Promise((resolve) => {
-        shipPlacementScreen(player);
+    })
+      // second stage for placiing the ships.
+      .then(() => {
+        // open the ship placement screen
+        new Promise((resolve) => {
+          // create ship placement screen
+          shipPlacementScreen(player);
+
+          // get confirm button;
+          const confirmBtn = document.getElementById("confirmBtn");
+
+          // when successful placements are made move on
+          confirmBtn.addEventListener("click", () => {
+            if (finishPlacingShips() === true) {
+              // clear the game wrapper
+              clearGameWrapper();
+              // move on
+              resolve();
+            }
+          });
+        })
+          // third stage where the game takes place
+          .then(() => {
+            // create the game screen
+            gameScreen();
+          });
       });
-    });
   }
   return { startGame };
 }
